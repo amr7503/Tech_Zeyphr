@@ -19,7 +19,7 @@ config();
 const app = express();
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -29,7 +29,10 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 
-app.use(cors());
+// FRONTEND_ORIGIN: allow overriding via env (set this in Render to your frontend URL).
+// Default set to the deployed frontend URL (may be adjusted in Render settings).
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'https://tech-zeyphr-1.onrender.com';
+app.use(cors({ origin: FRONTEND_ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -59,8 +62,9 @@ app.get('/health', (req, res) => {
 const httpServer = createServer(app);
 const io = new SocketIOServer(httpServer, {
     cors: {
-        origin: '*',
-        methods: ['GET', 'POST']
+        origin: FRONTEND_ORIGIN,
+        methods: ['GET', 'POST'],
+        credentials: true
     }
 });
 
@@ -90,8 +94,14 @@ io.on('connection', (socket) => {
     });
 });
 
-httpServer.listen(3000, () => {
-    console.log('Server (with Socket.IO) is listening on port 3000');
+// Expose the backend's public origin (used for absolute links, webhooks, or manifests).
+const BACKEND_ORIGIN = process.env.BACKEND_ORIGIN || 'https://tech-zeyphr.onrender.com';
+
+const PORT = process.env.PORT || 3000;
+httpServer.listen(PORT, () => {
+    console.log(`Server (with Socket.IO) is listening on port ${PORT}`);
+    console.log(`FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}`);
+    console.log(`BACKEND_ORIGIN: ${BACKEND_ORIGIN}`);
 });
 
 // Schedule daily EOD notifications at 23:59 server time
