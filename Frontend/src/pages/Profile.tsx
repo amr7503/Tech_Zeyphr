@@ -59,7 +59,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       if (!user?.id) return;
       try {
-        const res = await fetch(`http://localhost:3000/users/${user.id}`);
+  const res = await fetch(`https://tech-zeyphr.onrender.com/users/${user.id}`);
         if (res.ok) {
           const data = await res.json();
           setProfile(data || {});
@@ -75,7 +75,7 @@ const Profile = () => {
     const fetchSkills = async () => {
       if (user?.id) {
         try {
-          const response = await fetch(`http://localhost:3000/skills/${user.id}`);
+          const response = await fetch(`https://tech-zeyphr.onrender.com/skills/${user.id}`);
           if (response.ok) {
             const data = await response.json();
             setSkills(data);
@@ -109,7 +109,7 @@ const Profile = () => {
         alert('Please provide your location (use "Use my location" or fill latitude/longitude)');
         return;
       }
-      const response = await fetch('http://localhost:3000/skills/add', {
+  const response = await fetch('https://tech-zeyphr.onrender.com/skills/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -263,7 +263,7 @@ const Profile = () => {
                           <Button onClick={async () => {
                             // save profile
                             try {
-                              const resp = await fetch(`http://localhost:3000/users/${user.id}`, {
+                              const resp = await fetch(`https://tech-zeyphr.onrender.com/users/${user.id}`, {
                                 method: 'PATCH',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({

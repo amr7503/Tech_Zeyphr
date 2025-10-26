@@ -12,7 +12,7 @@ interface ChatMessage {
     timestamp?: number;
 }
 
-const SOCKET_SERVER_URL = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+const SOCKET_SERVER_URL = import.meta.env.VITE_API_BASE || 'https://tech-zeyphr.onrender.com';
 
 export default function RealtimeChat({ defaultRoom, inline = false }: { defaultRoom?: string; inline?: boolean }) {
     const [connected, setConnected] = useState(false);

@@ -48,7 +48,7 @@ const Chatbot = () => {
     setIsTyping(true);
 
     try {
-      const resp = await fetch('http://localhost:3000/chat', {
+  const resp = await fetch('https://tech-zeyphr.onrender.com/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMessage.text })

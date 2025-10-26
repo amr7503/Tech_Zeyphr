@@ -55,7 +55,7 @@ const Discover = () => {
     const fetchSkills = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch("http://localhost:3000/skills");
+  const res = await fetch("https://tech-zeyphr.onrender.com/skills");
         if (!res.ok) throw new Error("Failed to fetch skills");
         const data = await res.json();
 

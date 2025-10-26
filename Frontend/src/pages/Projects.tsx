@@ -55,7 +55,7 @@ const Projects = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('http://localhost:3000/projects');
+  const response = await fetch('https://tech-zeyphr.onrender.com/projects');
       const data = await response.json();
       setProjects(data);
     } catch (error) {
@@ -82,7 +82,7 @@ const Projects = () => {
 
       console.log('Sending project data:', projectData);
 
-      const response = await fetch('http://localhost:3000/projects/create', {
+  const response = await fetch('https://tech-zeyphr.onrender.com/projects/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const Projects = () => {
 
   const handleJoinProject = async (projectId: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/projects/${projectId}/join`, {
+  const response = await fetch(`https://tech-zeyphr.onrender.com/projects/${projectId}/join`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ const Projects = () => {
 
   const handleUpdateProgress = async (projectId: string, progress: number) => {
     try {
-      const response = await fetch(`http://localhost:3000/projects/${projectId}/progress`, {
+  const response = await fetch(`https://tech-zeyphr.onrender.com/projects/${projectId}/progress`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
