@@ -5,6 +5,9 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // Use relative asset paths for production builds so the site works when served from
+  // a subpath or via a CDN. In development we keep the default '/'.
+  base: mode === "development" ? "/" : "./",
   server: {
     host: "::",
     port: 8080,
