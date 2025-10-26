@@ -30,9 +30,37 @@ mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI, {
 
 
 // FRONTEND_ORIGIN: allow overriding via env (set this in Render to your frontend URL).
-// Default set to the deployed frontend URL (may be adjusted in Render settings).
+// We allow multiple known frontend hosts (preview, production, localhost for local testing).
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'https://tech-zeyphr-1.onrender.com';
-app.use(cors({ origin: FRONTEND_ORIGIN, credentials: true }));
+const FRONTEND_ALT_ORIGIN = process.env.FRONTEND_ALT_ORIGIN || 'https://tech-zeyphr.onrender.com';
+const LOCAL_DEV_ORIGIN = process.env.LOCAL_DEV_ORIGIN || 'http://localhost:4173';
+
+const allowedOrigins = [FRONTEND_ORIGIN, FRONTEND_ALT_ORIGIN, LOCAL_DEV_ORIGIN].filter(Boolean);
+
+// Log incoming origin for debugging (useful to inspect Render logs when diagnosing 502/CORS)
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin) console.log('[CORS] Incoming request Origin:', origin);
+    next();
+});
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        // allow if no origin (e.g., server-to-server or same-origin requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            return callback(null, true);
+        } else {
+            console.warn('[CORS] Blocked origin:', origin);
+            return callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -62,8 +90,8 @@ app.get('/health', (req, res) => {
 const httpServer = createServer(app);
 const io = new SocketIOServer(httpServer, {
     cors: {
-        origin: FRONTEND_ORIGIN,
-        methods: ['GET', 'POST'],
+        origin: allowedOrigins,
+        methods: ['GET', 'POST', 'OPTIONS'],
         credentials: true
     }
 });
