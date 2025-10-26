@@ -24,7 +24,7 @@ Open PowerShell and run these steps. They assume you have Node.js and npm instal
 # 1) Backend setup
 cd .\Backend
 npm install
-copy .env-copy .env        # edit .env to set MONGODB_URI and any keys
+copy .env-copy .env     # edit .env to set MONGODB_URI and any keys
 
 # 2) Frontend setup (new window/terminal recommended)
 cd .\Frontend
@@ -32,7 +32,7 @@ npm install
 
 # 3) Start backend and frontend (in two terminals)
 cd ..\Backend
-npm run dev                # or `node app.js`
+npm run dev              # or `node app.js`
 
 cd ..\Frontend
 npm run dev
