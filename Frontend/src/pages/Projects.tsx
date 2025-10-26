@@ -37,6 +37,9 @@ interface Project {
   }[];
 }
 
+// Use env-configured API base (set VITE_API_BASE at build/deploy). Falls back to the backend URL.
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://tech-zeyphr.onrender.com';
+
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isCreating, setIsCreating] = useState(false);
@@ -55,7 +58,7 @@ const Projects = () => {
 
   const fetchProjects = async () => {
     try {
-  const response = await fetch('https://tech-zeyphr.onrender.com/projects');
+  const response = await fetch(`${API_BASE}/projects`);
       const data = await response.json();
       setProjects(data);
     } catch (error) {
@@ -82,7 +85,7 @@ const Projects = () => {
 
       console.log('Sending project data:', projectData);
 
-  const response = await fetch('https://tech-zeyphr.onrender.com/projects/create', {
+  const response = await fetch(`${API_BASE}/projects/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +111,7 @@ const Projects = () => {
 
   const handleJoinProject = async (projectId: string) => {
     try {
-  const response = await fetch(`https://tech-zeyphr.onrender.com/projects/${projectId}/join`, {
+  const response = await fetch(`${API_BASE}/projects/${projectId}/join`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,7 +137,7 @@ const Projects = () => {
 
   const handleUpdateProgress = async (projectId: string, progress: number) => {
     try {
-  const response = await fetch(`https://tech-zeyphr.onrender.com/projects/${projectId}/progress`, {
+  const response = await fetch(`${API_BASE}/projects/${projectId}/progress`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

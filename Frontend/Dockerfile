@@ -1,28 +1,5 @@
-# Multi-stage build for Vite + React frontend
-# Stage 1: build the static site
-FROM node:18-alpine AS build
-WORKDIR /app
-
-# Install dependencies
-COPY package.json package-lock.json* ./
-RUN npm ci --legacy-peer-deps || npm install
-
-# Copy source
-COPY . .
-
-# Allow passing the API base at build-time. Vite will inline VITE_ env vars during build.
-ARG VITE_API_BASE=https://tech-zeyphr.onrender.com
-RUN echo "VITE_API_BASE=${VITE_API_BASE}" > .env.production
-
-# Build the app (adjust script name if different)
-RUN npm run build
-
-# Stage 2: serve with nginx
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Optional: include a small nginx config if you need SPA routing
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+/*
+	Dockerfile disabled in repository to avoid Render autodetection for the Frontend static service.
+	A copy of the original Dockerfile was saved as Dockerfile.disabled in the same folder.
+	If you need to re-enable Docker-based deployment, rename Dockerfile.disabled -> Dockerfile
+*/

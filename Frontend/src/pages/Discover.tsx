@@ -55,7 +55,8 @@ const Discover = () => {
     const fetchSkills = async () => {
       try {
         setIsLoading(true);
-  const res = await fetch("https://tech-zeyphr.onrender.com/skills");
+  const API_BASE = import.meta.env.VITE_API_BASE || 'https://tech-zeyphr.onrender.com';
+  const res = await fetch(`${API_BASE}/skills`);
         if (!res.ok) throw new Error("Failed to fetch skills");
         const data = await res.json();
 

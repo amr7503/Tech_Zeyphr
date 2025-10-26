@@ -11,9 +11,10 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    // Allow Render preview host to access the dev server when doing remote previews
-    // Add any other hostnames that need access here.
-    allowedHosts: ["tech-zeyphr-1.onrender.com"],
+  // Allow Render preview hosts to access the dev server when doing remote previews.
+  // Add any other hostnames that need access here.
+  // Include both variants to be permissive during preview/redeploy troubleshooting.
+  allowedHosts: ["tech-zeyphr.onrender.com", "tech-zeyphr-1.onrender.com"],
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

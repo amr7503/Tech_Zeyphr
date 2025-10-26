@@ -15,6 +15,7 @@ interface Message {
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const API_BASE = import.meta.env.VITE_API_BASE || 'https://tech-zeyphr.onrender.com';
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -48,7 +49,7 @@ const Chatbot = () => {
     setIsTyping(true);
 
     try {
-  const resp = await fetch('https://tech-zeyphr.onrender.com/chat', {
+  const resp = await fetch(`${API_BASE}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMessage.text })
